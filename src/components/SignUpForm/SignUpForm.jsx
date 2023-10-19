@@ -2,7 +2,7 @@ import { Component } from "react";
 import { signUp } from "../../utilities/users-service";
 
 
-// use the class field approach(can also use constructor field approach)
+
 export default class SignUpForm extends Component {
     state = {
         name: '',
@@ -12,9 +12,7 @@ export default class SignUpForm extends Component {
         error: ''
     };
 
-    // The object passed to setState is merged with the current state object
-    // The handleChange method needs to go below the state and above the render.
-    // This allows the user to type into the texboxes(make changes to the form fields)
+
     handleChange = (evt) => {
         this.setState({
           [evt.target.name]: evt.target.value,
@@ -22,24 +20,15 @@ export default class SignUpForm extends Component {
         });
       };
 
-// handleSubmit method
-// LIFO in this callstack,the handleSubmit is the first into the stack
-// The LIFO order callstack, every call function has to be resolved before coming back to the first one: handleSubmit,users-service.js,usersAPI.js)
-// need to prevent the form from being submitted to the server with "evt.preventDefault( );"
+
 handleSubmit = async (evt) => {
     evt.preventDefault( );
     try {
-         // throw new Error( ) 
-
-        // We don't want to send the 'error' or 'confirm' property,
-        // so let's make a copy of the state object, then delete them
-        // the formData is a copy of the state
-        const formData = {...this.state}// making a copy
-        delete formData.error; //deleting properties
+ 
+        const formData = {...this.state}
+        delete formData.error; 
         delete formData.confirm;
-         // The promise returned by the signUp service method
-        //  will resolve to the user object included in the
-        // payload of the JSON Web Token (JWT)
+
         const user = await signUp(formData)
         this.props.setUser(user)
     } catch (err) {
